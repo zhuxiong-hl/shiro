@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="shiro-01" />
+        <module name="shiro-md5-salt-03" />
+        <module name="shiro-02" />
+        <module name="springboot-shiro-thymeleaf" />
+        <module name="springboot-shiro" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

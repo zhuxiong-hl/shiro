@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hl.springboot.mapper.UserMapper">
+    <insert id="saveUser" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+        insert into t_user(username, password, salt)
+        values (#{username}, #{password}, #{salt})
+    </insert>
+
+    <select id="findByUsername" resultType="User">
+        select id, username, password, salt
+        from t_user
+        where username = #{username}
+    </select>
+
+    <!-- resultMap最终还是要将结果映射到pojo上，type就是指定映射到哪一个pojo -->
+    <resultMap id="userMap" type="User">
+        <id column="uid" property="id"/>
+        <result column="username" property="username"/>
+        <!-- 角色信息-->
+        <collection property="roles" javaType="list" ofType="Role">
+            <id column="rid" property="id"/>
+            <result column="rname" property="roleName"/>
+        </collection>
+    </resultMap>
+
+    <select id="findRoleByUserName" parameterType="String" resultMap="userMap">
+        SELECT u.id as uid, u.username, r.id  as rid, r.role_name as rname
+        FROM t_user u
+                 LEFT JOIN t_user_role ur ON u.id = ur.user_id
+                 LEFT JOIN t_role r ON r.id = ur.role_id
+        WHERE u.username = #{username}
+    </select>
+
+
+
+    <select id="findPermByRoleId" parameterType="Integer" resultType="Perm">
+        select r.role_name as roleName, p.id as id, p.perm_name as permName, p.url as url
+        from t_role r
+                 left join t_role_perm rp
+                           on r.id = rp.role_id
+                 left join t_perm p
+                           on rp.perm_id = p.id
+        where r.id = #{id}
+    </select>
+</mapper>
